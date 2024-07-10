@@ -41,7 +41,7 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
 
         // 生成JWT，并放置到请求头中
         String jwt = jwtUtils.generateToken(authentication.getName());
-        httpServletResponse.setHeader(jwtUtils.getHeader(), jwt);
+        httpServletResponse.setHeader(jwtUtils.getHeader(), jwt);//请求头名字，内容
 
         Result result = Result.succ(jwt);
 

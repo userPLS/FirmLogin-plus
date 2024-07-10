@@ -9,7 +9,7 @@ import java.util.Date;
 
 @Data
 @Component
-@ConfigurationProperties(prefix = "tian.jwt")
+@ConfigurationProperties(prefix = "liutao.jwt")
 public class JwtUtils {
 
     private long expire;
