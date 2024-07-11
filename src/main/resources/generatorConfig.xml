@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generatorConfiguration
+        PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+        "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+
+<generatorConfiguration>
+    <!-- jdbc的jar包位置，插件需要连接数据库 -->
+    <!--location存放mysql的jar包绝对路径-->
+    <classPathEntry location="C:\Users\86151\.m2\repository\com\mysql\mysql-connector-j\8.3.0\mysql-connector-j-8.3.0.jar"/>
+    <!--id随便起，版本用的是MyBatis3-->
+    <context id="default" targetRuntime="MyBatis3"  defaultModelType="flat">
+        <!-- 是否去除自动生成的注释-->
+        <commentGenerator>
+            <property name="suppressAllComments" value="true"/>
+        </commentGenerator>
+        <!--数据库连接参数-->
+        <jdbcConnection driverClass="com.mysql.cj.jdbc.Driver"
+                        connectionURL="jdbc:mysql://localhost:3306/firmlogin?serverTimezone=GMT"
+                        userId="root"
+                        password="LTAO3572">
+            <property name="nullCatalogMeansCurrent" value="true" />
+        </jdbcConnection>
+
+        <!-- 类型处理器，在数据库类型和java类型之间的转换控制-->
+        <javaTypeResolver>
+            <property name="forceBigDecimals" value="false"/>
+        </javaTypeResolver>
+
+        <!--pojo类的生成-->
+        <!-- targetProject:JAVA类路径     targetProject:生成的pojo类的包-->
+        <!--在src/main/java下创建com.example.pojo包，存放pojo-->
+        <javaModelGenerator targetProject="src/main/java" targetPackage="com.tianblogs.security.entity">
+            <!-- 是否生成子包,即pojo下创建javaBean类时是否再建个包 -->
+            <property name="enableSubPackages" value="false"/>
+            <!-- 设置是否在getter方法中，对String类型字段调用trim()方法，即把两边的空格去掉 -->
+            <property name="trimStrings" value="true"/>
+        </javaModelGenerator>
+
+        <!--mapper.xml映射文件生成-->
+        <!-- targetProject:配置文件路径    targetPackage:生成映射文件的位置 -->
+        <!--在src/main/resources下创建mapper包，存放xml-->
+        <sqlMapGenerator targetProject="src/main/resources" targetPackage="mapper">
+            <!-- 是否生成子包 -->
+            <property name="enableSubPackages" value="false"/>
+        </sqlMapGenerator>
+
+        <!--持久层接口包生成-->
+        <!-- targetPackage：JAVA类路径    targetProject:生成的持久层接口包 -->
+        <!--在src/main/java下创建com.example.dao包，存放Mapper接口-->
+        <javaClientGenerator targetProject="src/main/java" targetPackage="com.tianblogs.security.mapper" type="XMLMAPPER">
+            <!-- 是否生成子包 -->
+            <property name="enableSubPackages" value="false"/>
+        </javaClientGenerator>
+
+        <!-- 数据库表，表名不要和其他库中的表名一样 -->
+        <table tableName="position"></table>
+    </context>
+</generatorConfiguration>

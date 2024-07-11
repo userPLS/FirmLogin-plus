@@ -3,15 +3,23 @@ package com.tianblogs.security.controller;
 import com.tianblogs.security.constant.RsaProperties;
 import com.tianblogs.security.entity.Result;
 import com.tianblogs.security.entity.SysUser;
+import com.tianblogs.security.handler.LoginFailureHandler;
+import com.tianblogs.security.handler.LoginSuccessHandler;
+import com.tianblogs.security.handler.error.LoginFailException;
 import com.tianblogs.security.handler.password.PasswordEncoder;
 import com.tianblogs.security.service.SysUserService;
+import com.tianblogs.security.user.AccountUser;
 import com.tianblogs.security.utils.RSAUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
@@ -30,7 +38,12 @@ public class UserController {
     private SysUserService sysUserService;
     @Autowired
     private PasswordEncoder passwordEncoder;
-
+    @Autowired
+    private UserDetailsService userDetailsService;
+    @Autowired
+    private LoginFailureHandler loginFailureHandler;
+    @Autowired
+    private LoginSuccessHandler loginSuccessHandler;
 
     @PostMapping("/register")
     public Result register(@RequestBody SysUser sysUser){
@@ -51,6 +64,22 @@ public class UserController {
             return Result.succ("注册成功！");
 
         }finally {
+            lock.unlock();
+        }
+    }
+    @PostMapping("/login")
+    public Result login(@RequestBody SysUser sysUser, HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Authentication authentication) throws Exception {
+        ReentrantLock lock = new ReentrantLock();
+        lock.lock();
+        try {
+            AccountUser accountUser = (AccountUser) userDetailsService.loadUserByUsername(sysUser.getAccount());
+            if(accountUser!=null){
+                return
+            }
+            return
+        } catch (Exception e) {
+            throw new Exception(e);
+        } finally {
             lock.unlock();
         }
 

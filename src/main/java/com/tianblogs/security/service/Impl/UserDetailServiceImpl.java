@@ -1,7 +1,8 @@
-package com.tianblogs.security.user;
+package com.tianblogs.security.service.Impl;
 
 import com.tianblogs.security.entity.SysUser;
 import com.tianblogs.security.service.SysUserService;
+import com.tianblogs.security.user.AccountUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;

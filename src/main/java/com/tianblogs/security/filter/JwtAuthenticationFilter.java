@@ -3,7 +3,7 @@ package com.tianblogs.security.filter;
 import cn.hutool.core.util.StrUtil;
 import com.tianblogs.security.entity.SysUser;
 import com.tianblogs.security.service.SysUserService;
-import com.tianblogs.security.user.UserDetailServiceImpl;
+import com.tianblogs.security.service.Impl.UserDetailServiceImpl;
 import com.tianblogs.security.utils.JwtUtils;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtException;
@@ -12,7 +12,6 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
-import org.springframework.stereotype.Component;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
