@@ -3,12 +3,16 @@ package com.tianblogs.security.service.Impl;
 import com.tianblogs.security.entity.SysUser;
 import com.tianblogs.security.service.SysUserService;
 import com.tianblogs.security.user.AccountUser;
+import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCrypt;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -31,9 +35,34 @@ public class UserDetailServiceImpl implements UserDetailsService {
         if (sysUser == null) {
             throw new UsernameNotFoundException("用户名或密码错误");
         }
+        String md5 = DigestUtils.md5Hex("123456");
+        boolean matches = BCrypt.checkpw(md5,sysUser.getPassword());
+        if(matches) {
+            return new AccountUser(sysUser.getId(), sysUser.getName(), sysUser.getPassword(), getUserAuthority(sysUser.getId()));
+        }
+        else{
+            throw new UsernameNotFoundException("用户名或密码错误");
+        }
 
 
-        return new AccountUser(sysUser.getId(), sysUser.getName(), sysUser.getPassword(), getUserAuthority(sysUser.getId()));
+       /*
+        Object credentials = SecurityContextHolder.getContext().getAuthentication().getCredentials();
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+        final String passHash = encoder.encode((CharSequence)credentials);
+        final boolean matches = encoder.matches((CharSequence)credentials, passHash);
+        if(matches) {
+            return new AccountUser(sysUser.getId(), sysUser.getName(), sysUser.getPassword(), getUserAuthority(sysUser.getId()));
+        }
+        else{
+            throw new UsernameNotFoundException("用户名或密码错误");
+        }
+
+        System.out.println(md5);
+        String hashpw = BCrypt.hashpw(md5,BCrypt.gensalt());
+        System.out.println(hashpw);
+        System.out.println(BCrypt.checkpw(md5,"$2a$10$r/NBI5XJrwhRyui6MnL9h.PsqDZ4aUBi/YSUyVN2BM/ShsTneQjHy"));
+//        System.out.println(matchesPassword(md5,"$2a$10$YLAzJYgEkhyg7eCTV52uHu1rg4Yeyl6Sv67gqo/6zgjrG9t7.k44q"));
+        return new AccountUser(sysUser.getId(), sysUser.getName(), sysUser.getPassword(), getUserAuthority(sysUser.getId()));*/
 
     }
 

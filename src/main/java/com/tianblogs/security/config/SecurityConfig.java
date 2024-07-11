@@ -1,6 +1,6 @@
 package com.tianblogs.security.config;
 
-import com.tianblogs.security.filter.CaptchaFilter;
+//import com.tianblogs.security.filter.CaptchaFilter;
 import com.tianblogs.security.filter.CustomAuthenticationFilter;
 import com.tianblogs.security.filter.JwtAuthenticationFilter;
 import com.tianblogs.security.handler.LoginFailureHandler;
@@ -14,6 +14,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -65,8 +66,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     LoginSuccessHandler loginSuccessHandler;
 
-    @Autowired
-    CaptchaFilter captchaFilter;
+//    @Autowired
+//    CaptchaFilter captchaFilter;
 
     @Autowired
     JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
@@ -80,15 +81,23 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     JWTLogoutSuccessHandler jwtLogoutSuccessHandler;
 
+    @Autowired
+    private AuthenticationManager authenticationManager;
+
     @Bean
     JwtAuthenticationFilter jwtAuthenticationFilter() throws Exception {
         JwtAuthenticationFilter jwtAuthenticationFilter = new JwtAuthenticationFilter(authenticationManager());
         return jwtAuthenticationFilter;
     }
 
+    @Bean
+    @Override
+    public AuthenticationManager authenticationManagerBean() throws Exception {
+        return super.authenticationManagerBean();
+    }
 
     private static final String[] URL_WHITELIST = {
-      "/login",         //登录
+      "/user/login",         //登录
       "/logout",        //登出
       "/captcha",        //验证码
       "/user/register", //注册
@@ -139,8 +148,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 //自定义登录拦截 用customAuthenticationFilter 替换 UsernamePasswordAuthenticationFilter
                 .addFilterAt(customAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
 
-                // 验证码过滤器放在UsernamePassword过滤器之前
-                .addFilterBefore(captchaFilter, UsernamePasswordAuthenticationFilter.class)
+//                // 验证码过滤器放在UsernamePassword过滤器之前
+//                .addFilterBefore(captchaFilter, UsernamePasswordAuthenticationFilter.class)
                 ;
     }
 

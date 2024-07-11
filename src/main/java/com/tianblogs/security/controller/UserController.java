@@ -38,12 +38,6 @@ public class UserController {
     private SysUserService sysUserService;
     @Autowired
     private PasswordEncoder passwordEncoder;
-    @Autowired
-    private UserDetailsService userDetailsService;
-    @Autowired
-    private LoginFailureHandler loginFailureHandler;
-    @Autowired
-    private LoginSuccessHandler loginSuccessHandler;
 
     @PostMapping("/register")
     public Result register(@RequestBody SysUser sysUser){
@@ -68,20 +62,7 @@ public class UserController {
         }
     }
     @PostMapping("/login")
-    public Result login(@RequestBody SysUser sysUser, HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Authentication authentication) throws Exception {
-        ReentrantLock lock = new ReentrantLock();
-        lock.lock();
-        try {
-            AccountUser accountUser = (AccountUser) userDetailsService.loadUserByUsername(sysUser.getAccount());
-            if(accountUser!=null){
-                return
-            }
-            return
-        } catch (Exception e) {
-            throw new Exception(e);
-        } finally {
-            lock.unlock();
-        }
-
+    public SysUser login(@RequestBody SysUser sysUser)  {
+        return sysUserService.login(sysUser);
     }
 }

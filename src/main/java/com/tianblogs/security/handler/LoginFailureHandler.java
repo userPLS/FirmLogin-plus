@@ -2,7 +2,7 @@ package com.tianblogs.security.handler;
 
 import cn.hutool.json.JSONUtil;
 import com.tianblogs.security.entity.Result;
-import com.tianblogs.security.handler.error.CaptchaException;
+//import com.tianblogs.security.handler.error.CaptchaException;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.stereotype.Component;
@@ -27,12 +27,12 @@ public class LoginFailureHandler implements AuthenticationFailureHandler {
 
         String errorMessage = "用户名或密码错误";
         Result result;
-        if (e instanceof CaptchaException) {
-            errorMessage = "验证码错误";
+//        if (e instanceof CaptchaException) {
+//            errorMessage = "验证码错误";
+//            result = Result.fail(errorMessage);
+//        } else {
             result = Result.fail(errorMessage);
-        } else {
-            result = Result.fail(errorMessage);
-        }
+//        }
         outputStream.write(JSONUtil.toJsonStr(result).getBytes(StandardCharsets.UTF_8));
         outputStream.flush();
         outputStream.close();
